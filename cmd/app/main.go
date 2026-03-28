@@ -1,5 +1,74 @@
 package main
 
-func main() {
+import (
+	"database/sql"
+	"fmt"
+	"net/http"
+	"schedule/internal/logger"
+	admin_repository "schedule/internal/repository/admin"
+	schedule_repository "schedule/internal/repository/schedule"
+	admin_service "schedule/internal/service/admin"
+	schedule_service "schedule/internal/service/schedule"
+	admin_handler "schedule/internal/transport/admin"
+	schedule_handler "schedule/internal/transport/schedule"
 
+	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
+	"go.uber.org/zap"
+)
+
+func main() {
+	logger, err := logger.NewLogger()
+	if err != nil {
+		panic(err)
+	}
+	defer logger.Sync()
+	logger.Info("Logger initializated successfully")
+
+	connectString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", "postgres", "postgres", "localhost", "5432", "ScheduleDB")
+
+	db, err := sql.Open("postgres", connectString)
+	if err != nil {
+		logger.Error("Failed to open database connection", zap.Error(err))
+		panic(err)
+	}
+
+	if err := db.Ping(); err != nil {
+		logger.Error("Failed to connect to database", zap.Error(err))
+		panic(err)
+	}
+	logger.Info("Database connection established successfully")
+
+	// Repo init
+	scheduleRepo := schedule_repository.NewScheduleRepo(db, logger)
+	adminRepo := admin_repository.NewAdminRepository(db, logger)
+	logger.Info("repositories initializated successfully")
+
+	// Service init
+	scheduleService := schedule_service.NewScheduleService(scheduleRepo, logger)
+	adminService := admin_service.NewUserService(adminRepo, logger)
+	logger.Info("services initializated successfully")
+
+	// Transport init
+	scheduleHandler := schedule_handler.NewScheduleHandler(scheduleService, logger)
+	adminHandler := admin_handler.NewUserHandler(adminService, logger)
+	logger.Info("handlers initializated successfully")
+
+	router := mux.NewRouter()
+
+	// Schedule handlers
+	router.Path("/schedule").Methods("GET").HandlerFunc(scheduleHandler.GetSchedule)
+
+	// Admin handlers
+	router.Path("/teachers").Methods("POST").HandlerFunc(adminHandler.AddTeacher)
+	router.Path("/classrooms").Methods("POST").HandlerFunc(adminHandler.AddClassroom)
+	router.Path("/subjects").Methods("POST").HandlerFunc(adminHandler.AddSubject)
+	router.Path("/groups").Methods("POST").HandlerFunc(adminHandler.AddGroup)
+	router.Path("/schedule").Methods("POST").HandlerFunc(adminHandler.CreateSchedule)
+
+	logger.Info("Starting server on :8080")
+	if err := http.ListenAndServe(":8080", router); err != nil {
+		logger.Error("Failed to start server", zap.Error(err))
+		panic(err)
+	}
 }

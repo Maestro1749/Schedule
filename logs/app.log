@@ -59,3 +59,215 @@
 {"level":"info","timestamp":"2026-03-28 19:41:13","caller":"app/main.go:50","msg":"services initializated successfully"}
 {"level":"info","timestamp":"2026-03-28 19:41:13","caller":"app/main.go:55","msg":"handlers initializated successfully"}
 {"level":"info","timestamp":"2026-03-28 19:41:13","caller":"app/main.go:69","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-28 19:56:44","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 19:56:44","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-28 19:56:44","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 19:56:44","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 19:56:44","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 19:56:44","caller":"app/main.go:77","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-28 20:04:07","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:04:07","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-28 20:04:07","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:04:07","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:04:07","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:04:07","caller":"app/main.go:78","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-28 20:07:16","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:07:16","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-28 20:07:16","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:07:16","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:07:16","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:07:16","caller":"app/main.go:81","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-28 20:08:26","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:08:45","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:09:29","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:09:54","caller":"admin/repository.go:255","msg":"Successfully added groups","count":1}
+{"level":"info","timestamp":"2026-03-28 20:10:37","caller":"admin/repository.go:57","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:27:39","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:27:39","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-28 20:27:39","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:27:39","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:27:39","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:27:39","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-28 20:29:09","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:29:20","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:29:34","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:29:41","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:29:50","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:30:04","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:30:26","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:30:35","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:30:51","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:31:08","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:31:26","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:31:35","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:31:45","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:32:20","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:32:40","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:32:53","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:33:12","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:33:26","caller":"admin/repository.go:87","msg":"Successfully added teachers","count":1}
+{"level":"info","timestamp":"2026-03-28 20:33:45","caller":"admin/repository.go:143","msg":"Successfully added subjects","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:04","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:07","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:25","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:35","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:37","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:38","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:40","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:40","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:42","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:43","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:45","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:47","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:48","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:50","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:51","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:52","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:53","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:55","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:56","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:58","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:34:59","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:00","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:01","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:02","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:03","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:04","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:05","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:05","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:07","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:09","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:10","caller":"admin/repository.go:199","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-28 20:35:24","caller":"admin/repository.go:255","msg":"Successfully added groups","count":1}
+{"level":"info","timestamp":"2026-03-28 20:36:28","caller":"admin/repository.go:57","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:37:04","caller":"admin/repository.go:57","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:38:11","caller":"admin/repository.go:57","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:39:00","caller":"admin/repository.go:57","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:39:41","caller":"admin/repository.go:57","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:40:09","caller":"admin/repository.go:57","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:40:44","caller":"admin/repository.go:57","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:53:11","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:53:11","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-28 20:53:11","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:53:11","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:53:11","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:53:11","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-28 20:58:00","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:58:00","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-28 20:58:00","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:58:00","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:58:00","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-28 20:58:00","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-28 20:59:23","caller":"admin/repository.go:66","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 20:59:53","caller":"admin/repository.go:66","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 21:00:42","caller":"admin/repository.go:66","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-28 21:01:10","caller":"admin/repository.go:66","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-29 17:44:16","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 17:44:16","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 17:44:16","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 17:44:16","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 17:44:16","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 17:44:16","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-29 17:50:35","caller":"admin/repository.go:230","msg":"Successfully added classrooms","count":1}
+{"level":"info","timestamp":"2026-03-29 17:51:04","caller":"admin/repository.go:66","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-29 17:53:27","caller":"admin/repository.go:66","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-29 17:54:06","caller":"admin/repository.go:66","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-29 17:54:34","caller":"admin/repository.go:66","msg":"Successfully created schedule","count":1}
+{"level":"info","timestamp":"2026-03-29 17:59:10","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 17:59:10","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 17:59:10","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 17:59:10","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 17:59:10","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 17:59:10","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-29 18:00:47","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:00:47","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 18:00:47","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:00:47","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:00:47","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:00:47","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-29 18:02:42","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:42","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:42","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:42","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:42","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:42","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"error","timestamp":"2026-03-29 18:02:42","caller":"app/main.go:84","msg":"Failed to start server","error":"listen tcp :8080: bind: address already in use","stacktrace":"main.main\n\t/home/kamil/goprojects/Курсовая/Schedule/cmd/app/main.go:84\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:290"}
+{"level":"info","timestamp":"2026-03-29 18:02:52","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:52","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:52","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:52","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:52","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:02:52","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"error","timestamp":"2026-03-29 18:02:52","caller":"app/main.go:84","msg":"Failed to start server","error":"listen tcp :8080: bind: address already in use","stacktrace":"main.main\n\t/home/kamil/goprojects/Курсовая/Schedule/cmd/app/main.go:84\nruntime.main\n\t/usr/local/go/src/runtime/proc.go:290"}
+{"level":"info","timestamp":"2026-03-29 18:03:48","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:03:48","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 18:03:48","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:03:48","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:03:48","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:03:48","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-29 18:13:08","caller":"app/main.go:27","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:13:08","caller":"app/main.go:41","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 18:13:08","caller":"app/main.go:46","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:13:08","caller":"app/main.go:51","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:13:08","caller":"app/main.go:56","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:13:08","caller":"app/main.go:82","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-29 18:15:21","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:21","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:21","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:21","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:21","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:21","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-03-29 18:15:45","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:45","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:45","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:45","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:45","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-03-29 18:15:45","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-01 11:47:40","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 11:47:40","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-01 11:47:40","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 11:47:40","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 11:47:40","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 11:47:40","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-01 17:34:31","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 17:34:31","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-01 17:34:31","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 17:34:31","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 17:34:31","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 17:34:31","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-01 21:46:10","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 21:46:10","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-01 21:46:10","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 21:46:10","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 21:46:10","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 21:46:10","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-01 22:01:22","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 22:01:22","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-01 22:01:22","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 22:01:22","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 22:01:22","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-01 22:01:22","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-03 10:13:28","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-03 10:13:28","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-03 10:13:28","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-03 10:13:28","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-03 10:13:28","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-03 10:13:28","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-08 12:18:24","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-08 12:18:24","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-08 12:18:24","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-08 12:18:24","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-08 12:18:24","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-08 12:18:24","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-08 12:44:58","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-08 12:44:58","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-08 12:44:58","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-08 12:44:58","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-08 12:44:58","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-08 12:44:58","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-10 11:17:26","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-10 11:17:27","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-10 11:17:27","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-10 11:17:27","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-10 11:17:27","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-10 11:17:27","caller":"app/main.go:85","msg":"Starting server on :8080"}

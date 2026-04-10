@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"schedule/internal/logger"
 	admin_repository "schedule/internal/repository/admin"
 	schedule_repository "schedule/internal/repository/schedule"
@@ -18,6 +20,8 @@ import (
 )
 
 func main() {
+	pid := os.Getpid()
+	fmt.Println("PID: ", pid)
 	logger, err := logger.NewLogger()
 	if err != nil {
 		panic(err)
@@ -58,13 +62,25 @@ func main() {
 
 	// Schedule handlers
 	router.Path("/schedule").Methods("GET").HandlerFunc(scheduleHandler.GetSchedule)
+	router.Path("/schedule/week").Methods("GET").HandlerFunc(scheduleHandler.GetWeekSchedule)
 
 	// Admin handlers
+	router.Path("/teachers").Methods("GET").HandlerFunc(adminHandler.GetTeachers)
 	router.Path("/teachers").Methods("POST").HandlerFunc(adminHandler.AddTeacher)
+	router.Path("/classrooms").Methods("GET").HandlerFunc(adminHandler.GetClassrooms)
 	router.Path("/classrooms").Methods("POST").HandlerFunc(adminHandler.AddClassroom)
+	router.Path("/subjects").Methods("GET").HandlerFunc(adminHandler.GetSubjects)
 	router.Path("/subjects").Methods("POST").HandlerFunc(adminHandler.AddSubject)
+	router.Path("/groups").Methods("GET").HandlerFunc(adminHandler.GetGroups)
 	router.Path("/groups").Methods("POST").HandlerFunc(adminHandler.AddGroup)
 	router.Path("/schedule").Methods("POST").HandlerFunc(adminHandler.CreateSchedule)
+
+	assetsDir := filepath.Join("web", "assets")
+	assetsHandler := http.StripPrefix("/assets/", http.FileServer(http.Dir(assetsDir)))
+	router.PathPrefix("/assets/").Methods("GET").Handler(assetsHandler)
+	router.Path("/").Methods("GET").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, filepath.Join("web", "index.html"))
+	})
 
 	logger.Info("Starting server on :8080")
 	if err := http.ListenAndServe(":8080", router); err != nil {

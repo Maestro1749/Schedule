@@ -27,3 +27,11 @@ func (s *ScheduleService) GetSchedule(req models.GetScheduleRequest) ([]models.S
 
 	return s.repo.GetSchedule(req.GroupID, req.WeekType, req.Weekday, req.Subgroup)
 }
+
+func (s *ScheduleService) GetWeekSchedule(req models.GetWeekScheduleRequest) ([]models.ScheduleItemResponse, error) {
+	if req.WeekType != nil && *req.WeekType != 1 && *req.WeekType != 2 {
+		return nil, models.ErrInvalidWeekType
+	}
+
+	return s.repo.GetWeekSchedule(req.GroupID, req.WeekType, req.Subgroup)
+}

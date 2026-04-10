@@ -7,6 +7,12 @@ type GetScheduleRequest struct {
 	Subgroup *int `form:"subgroup"`
 }
 
+type GetWeekScheduleRequest struct {
+	GroupID  int  `form:"group_id"`
+	WeekType *int `form:"week_type"`
+	Subgroup *int `form:"subgroup"`
+}
+
 type ScheduleItemResponse struct {
 	ID           int    `json:"id"`
 	GroupID      int    `json:"group_id"`
@@ -15,7 +21,7 @@ type ScheduleItemResponse struct {
 	ClassroomID  int    `json:"classroom_id"`
 	Weekday      int    `json:"weekday"`
 	LessonNumber int    `json:"lesson_number"`
-	WeekType     int    `json:"week_type"`
+	WeekType     *int   `json:"week_type"`
 	Subgroup     *int   `json:"subgroup"`
 	SubjectName  string `json:"subject_name"`
 	TeacherName  string `json:"teacher_name"`
@@ -62,6 +68,6 @@ type CreateScheduleDTO struct {
 	ClassroomID  int  `json:"classroom_id"`
 	Weekday      int  `json:"weekday"`
 	LessonNumber int  `json:"lesson_number"`
-	WeekType     int  `json:"week_type"`
+	WeekType     *int `json:"week_type,omitempty"`
 	Subgroup     *int `json:"subgroup,omitempty"`
 }

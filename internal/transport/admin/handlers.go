@@ -54,6 +54,9 @@ func (h *AdminHandler) AddTeacher(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid input data", http.StatusBadRequest)
 			return
+		case errors.Is(err, models.ErrAlreadyExists):
+			http.Error(w, "Teacher already exists", http.StatusConflict)
+			return
 		default:
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -80,6 +83,9 @@ func (h *AdminHandler) AddSubject(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid input data", http.StatusBadRequest)
+			return
+		case errors.Is(err, models.ErrAlreadyExists):
+			http.Error(w, "Subject already exists", http.StatusConflict)
 			return
 		default:
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -108,6 +114,9 @@ func (h *AdminHandler) AddClassroom(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid input data", http.StatusBadRequest)
 			return
+		case errors.Is(err, models.ErrAlreadyExists):
+			http.Error(w, "Classroom already exists", http.StatusConflict)
+			return
 		default:
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -135,6 +144,9 @@ func (h *AdminHandler) AddGroup(w http.ResponseWriter, r *http.Request) {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid input data", http.StatusBadRequest)
 			return
+		case errors.Is(err, models.ErrAlreadyExists):
+			http.Error(w, "Group already exists", http.StatusConflict)
+			return
 		default:
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
@@ -142,4 +154,100 @@ func (h *AdminHandler) AddGroup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+}
+
+func (h *AdminHandler) GetTeachers(w http.ResponseWriter, r *http.Request) {
+	teachers, err := h.service.GetTeachers()
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	response := make([]map[string]interface{}, 0, len(teachers))
+	for _, teacher := range teachers {
+		response = append(response, map[string]interface{}{
+			"id":       teacher.ID,
+			"fullname": teacher.Fullname,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		h.logger.Error("Failed to encode teachers response", zap.Error(err))
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *AdminHandler) GetSubjects(w http.ResponseWriter, r *http.Request) {
+	subjects, err := h.service.GetSubjects()
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	response := make([]map[string]interface{}, 0, len(subjects))
+	for _, subject := range subjects {
+		response = append(response, map[string]interface{}{
+			"id":   subject.ID,
+			"name": subject.Name,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		h.logger.Error("Failed to encode subjects response", zap.Error(err))
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *AdminHandler) GetClassrooms(w http.ResponseWriter, r *http.Request) {
+	classrooms, err := h.service.GetClassrooms()
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	response := make([]map[string]interface{}, 0, len(classrooms))
+	for _, classroom := range classrooms {
+		response = append(response, map[string]interface{}{
+			"id":     classroom.ID,
+			"number": classroom.Number,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		h.logger.Error("Failed to encode classrooms response", zap.Error(err))
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *AdminHandler) GetGroups(w http.ResponseWriter, r *http.Request) {
+	groups, err := h.service.GetGroups()
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	response := make([]map[string]interface{}, 0, len(groups))
+	for _, group := range groups {
+		response = append(response, map[string]interface{}{
+			"id":   group.ID,
+			"name": group.Name,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		h.logger.Error("Failed to encode groups response", zap.Error(err))
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
 }

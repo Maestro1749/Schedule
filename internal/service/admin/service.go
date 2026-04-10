@@ -3,6 +3,7 @@ package admin_service
 import (
 	"schedule/internal/models"
 	admin_repository "schedule/internal/repository/admin"
+	"strings"
 
 	"go.uber.org/zap"
 )
@@ -28,7 +29,7 @@ func (s *AdminService) CreateSchedule(data []models.CreateScheduleDTO) error {
 		if item.Weekday < 1 || item.Weekday > 7 {
 			return models.ErrInvalidWeekday
 		}
-		if item.WeekType != 1 && item.WeekType != 2 {
+		if item.WeekType != nil && *item.WeekType != 1 && *item.WeekType != 2 {
 			return models.ErrInvalidWeekType
 		}
 	}
@@ -45,9 +46,26 @@ func (s *AdminService) AddTeacher(teachers []models.Teacher) error {
 		return models.ErrInvalidDataInput
 	}
 
-	for _, t := range teachers {
-		if t.Fullname == "" {
+	seen := make(map[string]struct{})
+
+	for i := range teachers {
+		teachers[i].Fullname = strings.TrimSpace(teachers[i].Fullname)
+		if teachers[i].Fullname == "" {
 			return models.ErrInvalidDataInput
+		}
+
+		normalized := strings.ToLower(teachers[i].Fullname)
+		if _, ok := seen[normalized]; ok {
+			return models.ErrAlreadyExists
+		}
+		seen[normalized] = struct{}{}
+
+		exists, err := s.repo.TeacherExistsByFullname(teachers[i].Fullname)
+		if err != nil {
+			return err
+		}
+		if exists {
+			return models.ErrAlreadyExists
 		}
 	}
 
@@ -63,9 +81,26 @@ func (s *AdminService) AddClassroom(classrooms []models.Classroom) error {
 		return models.ErrInvalidDataInput
 	}
 
-	for _, c := range classrooms {
-		if c.Number == "" {
+	seen := make(map[string]struct{})
+
+	for i := range classrooms {
+		classrooms[i].Number = strings.TrimSpace(classrooms[i].Number)
+		if classrooms[i].Number == "" {
 			return models.ErrInvalidDataInput
+		}
+
+		normalized := strings.ToLower(classrooms[i].Number)
+		if _, ok := seen[normalized]; ok {
+			return models.ErrAlreadyExists
+		}
+		seen[normalized] = struct{}{}
+
+		exists, err := s.repo.ClassroomExistsByNumber(classrooms[i].Number)
+		if err != nil {
+			return err
+		}
+		if exists {
+			return models.ErrAlreadyExists
 		}
 	}
 
@@ -81,9 +116,26 @@ func (s *AdminService) AddSubject(subjects []models.Subject) error {
 		return models.ErrInvalidDataInput
 	}
 
-	for _, s := range subjects {
-		if s.Name == "" {
+	seen := make(map[string]struct{})
+
+	for i := range subjects {
+		subjects[i].Name = strings.TrimSpace(subjects[i].Name)
+		if subjects[i].Name == "" {
 			return models.ErrInvalidDataInput
+		}
+
+		normalized := strings.ToLower(subjects[i].Name)
+		if _, ok := seen[normalized]; ok {
+			return models.ErrAlreadyExists
+		}
+		seen[normalized] = struct{}{}
+
+		exists, err := s.repo.SubjectExistsByName(subjects[i].Name)
+		if err != nil {
+			return err
+		}
+		if exists {
+			return models.ErrAlreadyExists
 		}
 	}
 
@@ -99,15 +151,48 @@ func (s *AdminService) AddGroup(groups []models.Group) error {
 		return models.ErrInvalidDataInput
 	}
 
-	for _, g := range groups {
-		if g.Name == "" {
+	seen := make(map[string]struct{})
+
+	for i := range groups {
+		groups[i].Name = strings.TrimSpace(groups[i].Name)
+		if groups[i].Name == "" {
 			return models.ErrInvalidDataInput
+		}
+
+		normalized := strings.ToLower(groups[i].Name)
+		if _, ok := seen[normalized]; ok {
+			return models.ErrAlreadyExists
+		}
+		seen[normalized] = struct{}{}
+
+		exists, err := s.repo.GroupExistsByName(groups[i].Name)
+		if err != nil {
+			return err
+		}
+		if exists {
+			return models.ErrAlreadyExists
 		}
 	}
 
 	if err := s.repo.AddGroup(groups); err != nil {
-		return models.ErrInvalidDataInput
+		return err
 	}
 
 	return nil
+}
+
+func (s *AdminService) GetTeachers() ([]models.Teacher, error) {
+	return s.repo.GetTeachers()
+}
+
+func (s *AdminService) GetSubjects() ([]models.Subject, error) {
+	return s.repo.GetSubjects()
+}
+
+func (s *AdminService) GetClassrooms() ([]models.Classroom, error) {
+	return s.repo.GetClassrooms()
+}
+
+func (s *AdminService) GetGroups() ([]models.Group, error) {
+	return s.repo.GetGroups()
 }

@@ -8,7 +8,7 @@ type Schedule struct {
 	ClassroomID  int
 	Weekday      int
 	LessonNumber int
-	WeekType     int
+	WeekType     *int
 	Subgroup     *int
 }
 

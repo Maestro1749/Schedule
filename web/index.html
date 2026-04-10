@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Schedule Local Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/assets/styles.css?v=20260329b" />
+</head>
+<body>
+  <div class="ambient-shape shape-a"></div>
+  <div class="ambient-shape shape-b"></div>
+
+  <main class="layout">
+    <header class="hero">
+      <p class="eyebrow">localhost panel</p>
+      <h1>Управление расписанием</h1>
+      <p class="hero-text">
+        Поиск по параметрам и быстрое заполнение таблиц:<br />
+        <strong>teachers</strong>, <strong>subjects</strong>, <strong>classrooms</strong>, <strong>groups</strong>, <strong>schedule</strong>.
+      </p>
+    </header>
+
+    <section class="tabs" aria-label="Разделы">
+      <button class="tab-btn active" data-tab="search">Получить расписание</button>
+      <button class="tab-btn" data-tab="admin">Админ-панель</button>
+    </section>
+
+    <section class="panel active" id="panel-search">
+      <form id="search-form" class="card grid search-grid">
+        <h2>Поиск пары</h2>
+
+        <label>
+          Группа
+          <select name="group_id" id="search-group-select" required>
+            <option value="">Загрузка групп...</option>
+          </select>
+        </label>
+
+        <label>
+          День недели
+          <select name="weekday" required>
+            <option value="1">Понедельник</option>
+            <option value="2">Вторник</option>
+            <option value="3">Среда</option>
+            <option value="4">Четверг</option>
+            <option value="5">Пятница</option>
+            <option value="6">Суббота</option>
+            <option value="7">Воскресенье</option>
+          </select>
+        </label>
+
+        <label>
+          Номер пары
+          <select name="lesson_number" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </label>
+
+        <label>
+          Тип недели (необязательно)
+          <select name="week_type">
+            <option value="">Обе недели</option>
+            <option value="1">1 неделя</option>
+            <option value="2">2 неделя</option>
+          </select>
+        </label>
+
+        <label>
+          Подгруппа (необязательно)
+          <select name="subgroup">
+            <option value="">Все</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+          </select>
+        </label>
+
+        <button class="primary" type="submit">Найти расписание</button>
+        <button class="primary" type="button" id="weekly-schedule-btn">Показать всю неделю</button>
+      </form>
+
+      <div class="card result-card">
+        <div class="result-head">
+          <h2>Результат</h2>
+          <p id="search-status" class="status muted">Ожидание запроса...</p>
+        </div>
+        <div id="schedule-result" class="result-list"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-admin">
+      <div class="hint card">
+        <h2>Свободный доступ</h2>
+        <p>Панель не защищена: все формы отправляют POST-запросы напрямую в API на этом localhost.</p>
+      </div>
+
+      <div class="admin-grid">
+        <form class="card admin-form" data-endpoint="/teachers" data-kind="teachers">
+          <h3>Добавить преподавателя</h3>
+          <label>
+            ФИО
+            <input type="text" name="fullname" required placeholder="Иванов Иван Иванович" />
+          </label>
+          <button class="primary" type="submit">POST /teachers</button>
+          <p class="status muted"></p>
+        </form>
+
+        <form class="card admin-form" data-endpoint="/subjects" data-kind="subjects">
+          <h3>Добавить предмет</h3>
+          <label>
+            Название
+            <input type="text" name="name" required placeholder="Базы данных" />
+          </label>
+          <button class="primary" type="submit">POST /subjects</button>
+          <p class="status muted"></p>
+        </form>
+
+        <form class="card admin-form" data-endpoint="/classrooms" data-kind="classrooms">
+          <h3>Добавить аудиторию</h3>
+          <label>
+            Кабинет
+            <input type="text" name="number" required placeholder="A-301" />
+          </label>
+          <button class="primary" type="submit">POST /classrooms</button>
+          <p class="status muted"></p>
+        </form>
+
+        <form class="card admin-form" data-endpoint="/groups" data-kind="groups">
+          <h3>Добавить группу</h3>
+          <label>
+            Название
+            <input type="text" name="name" required placeholder="ПИ-21" />
+          </label>
+          <button class="primary" type="submit">POST /groups</button>
+          <p class="status muted"></p>
+        </form>
+      </div>
+
+      <form id="schedule-create-form" class="card schedule-form">
+        <h3>Добавить запись в Schedule</h3>
+        <p class="muted">Отправляется как массив из одного объекта в POST /schedule.</p>
+
+        <div class="schedule-grid">
+          <label>
+            Group
+            <select name="group_id" id="create-group-select" required>
+              <option value="">Загрузка групп...</option>
+            </select>
+          </label>
+          <label>
+            Subject
+            <select name="subject_id" id="create-subject-select" required>
+              <option value="">Загрузка предметов...</option>
+            </select>
+          </label>
+          <label>
+            Teacher
+            <select name="teacher_id" id="create-teacher-select" required>
+              <option value="">Загрузка преподавателей...</option>
+            </select>
+          </label>
+          <label>
+            Classroom
+            <select name="classroom_id" id="create-classroom-select" required>
+              <option value="">Загрузка аудиторий...</option>
+            </select>
+          </label>
+          <label>
+            Weekday (1-7)
+            <input type="number" min="1" max="7" name="weekday" required />
+          </label>
+          <label>
+            Lesson number (1-10)
+            <input type="number" min="1" max="10" name="lesson_number" required />
+          </label>
+          <label>
+            Week type (1-2, необязательно)
+            <input type="number" min="1" max="2" name="week_type" placeholder="Пусто = для 1 и 2 недели" />
+          </label>
+          <label>
+            Subgroup (1/2, необязательно)
+            <input type="number" min="1" max="2" name="subgroup" placeholder="Пусто = для всех" />
+          </label>
+        </div>
+
+        <button class="primary" type="submit">POST /schedule</button>
+        <p id="schedule-create-status" class="status muted"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="/assets/app.js?v=20260329b"></script>
+</body>
+</html>

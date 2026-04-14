@@ -1,8 +1,11 @@
 package admin_repository
 
 import (
+	"context"
 	"database/sql"
+	"fmt"
 	"schedule/internal/models"
+	"time"
 
 	"go.uber.org/zap"
 )
@@ -21,6 +24,8 @@ type AdminRepository interface {
 	GetClassrooms() ([]models.Classroom, error)
 	GetGroups() ([]models.Group, error)
 	CreateSchedule(data []models.CreateScheduleDTO) error
+	DeleteSchedule(groupID int, weekday int, weektype *int, subgroup *int, lessonNumber *int) error
+	GetGroupIdByName(groupName string) (int, error)
 }
 
 type adminRepo struct {
@@ -333,4 +338,70 @@ func (r *adminRepo) GetGroups() ([]models.Group, error) {
 	}
 
 	return groups, nil
+}
+
+func (r *adminRepo) DeleteSchedule(
+	groupID int,
+	weekday int,
+	weektype *int,
+	subgroup *int,
+	lessonNumber *int,
+) error {
+	query := "DELETE FROM Schedule WHERE group_id = $1 AND weekday = $2"
+	args := []interface{}{groupID, weekday}
+	argIndex := 3
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if weektype != nil {
+		query += fmt.Sprintf(" AND week_type = $%d", argIndex)
+		args = append(args, *weektype)
+		argIndex++
+	}
+
+	if subgroup != nil {
+		query += fmt.Sprintf(" AND subgroup = $%d", argIndex)
+		args = append(args, *subgroup)
+		argIndex++
+	}
+
+	if lessonNumber != nil {
+		query += fmt.Sprintf(" AND lesson_number = $%d", argIndex)
+		args = append(args, *lessonNumber)
+	}
+
+	res, err := r.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		r.logger.Error("failed to execute query", zap.Error(err))
+		return models.ErrInternalServer
+	}
+
+	count, err := res.RowsAffected()
+	if err != nil {
+		r.logger.Error("error to get affected rows", zap.Error(err))
+		return models.ErrInternalServer
+	}
+	if count == 0 {
+		return models.ErrNotUpdated
+	}
+
+	return nil
+}
+
+func (r *adminRepo) GetGroupIdByName(groupName string) (int, error) {
+	query := "SELECT id FROM Groups WHERE name = $1"
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var id int
+
+	err := r.db.QueryRowContext(ctx, query, groupName).Scan(&id)
+	if err != nil {
+		r.logger.Error("error to execute query", zap.Error(err))
+		return 0, models.ErrInternalServer
+	}
+
+	return id, nil
 }

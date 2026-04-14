@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/assets/styles.css?v=20260329b" />
+  <link rel="stylesheet" href="/assets/styles.css?v=20260413a" />
 </head>
 <body>
   <div class="ambient-shape shape-a"></div>
@@ -17,10 +17,6 @@
     <header class="hero">
       <p class="eyebrow">localhost panel</p>
       <h1>Управление расписанием</h1>
-      <p class="hero-text">
-        Поиск по параметрам и быстрое заполнение таблиц:<br />
-        <strong>teachers</strong>, <strong>subjects</strong>, <strong>classrooms</strong>, <strong>groups</strong>, <strong>schedule</strong>.
-      </p>
     </header>
 
     <section class="tabs" aria-label="Разделы">
@@ -92,7 +88,10 @@
 
       <div class="card result-card">
         <div class="result-head">
-          <h2>Результат</h2>
+          <div>
+            <h2>Результат</h2>
+            <p id="result-group-name" class="status muted"></p>
+          </div>
           <p id="search-status" class="status muted">Ожидание запроса...</p>
         </div>
         <div id="schedule-result" class="result-list"></div>
@@ -102,7 +101,7 @@
     <section class="panel" id="panel-admin">
       <div class="hint card">
         <h2>Свободный доступ</h2>
-        <p>Панель не защищена: все формы отправляют POST-запросы напрямую в API на этом localhost.</p>
+        <p>Внимание! Панель не защищена: все формы отправляют POST-запросы напрямую в API на этом localhost.</p>
       </div>
 
       <div class="admin-grid">
@@ -112,7 +111,7 @@
             ФИО
             <input type="text" name="fullname" required placeholder="Иванов Иван Иванович" />
           </label>
-          <button class="primary" type="submit">POST /teachers</button>
+            <button class="primary" type="submit">Добавить</button>
           <p class="status muted"></p>
         </form>
 
@@ -120,9 +119,9 @@
           <h3>Добавить предмет</h3>
           <label>
             Название
-            <input type="text" name="name" required placeholder="Базы данных" />
+            <input type="text" name="name" required />
           </label>
-          <button class="primary" type="submit">POST /subjects</button>
+          <button class="primary" type="submit">Добавить</button>
           <p class="status muted"></p>
         </form>
 
@@ -130,9 +129,9 @@
           <h3>Добавить аудиторию</h3>
           <label>
             Кабинет
-            <input type="text" name="number" required placeholder="A-301" />
+            <input type="text" name="number" required />
           </label>
-          <button class="primary" type="submit">POST /classrooms</button>
+          <button class="primary" type="submit">Добавить</button>
           <p class="status muted"></p>
         </form>
 
@@ -140,16 +139,16 @@
           <h3>Добавить группу</h3>
           <label>
             Название
-            <input type="text" name="name" required placeholder="ПИ-21" />
+            <input type="text" name="name" required />
           </label>
-          <button class="primary" type="submit">POST /groups</button>
+          <button class="primary" type="submit">Добавить</button>
           <p class="status muted"></p>
         </form>
       </div>
 
       <form id="schedule-create-form" class="card schedule-form">
-        <h3>Добавить запись в Schedule</h3>
-        <p class="muted">Отправляется как массив из одного объекта в POST /schedule.</p>
+        <h3>Добавить запись в расписание</h3>
+        <p class="muted">Заполните все поля и нажмите "Добавить".</p>
 
         <div class="schedule-grid">
           <label>
@@ -194,12 +193,53 @@
           </label>
         </div>
 
-        <button class="primary" type="submit">POST /schedule</button>
+        <button class="primary" type="submit">Добавить</button>
         <p id="schedule-create-status" class="status muted"></p>
+      </form>
+
+      <form id="schedule-delete-form" class="card schedule-form">
+        <h3>Удалить запись из расписания</h3>
+        <p class="muted">Удаление идет по группе, дню, паре и, при необходимости, типу недели и подгруппе.</p>
+
+        <div class="schedule-grid">
+          <label>
+            Group
+            <select name="group_name" id="delete-group-select" required>
+              <option value="">Загрузка групп...</option>
+            </select>
+          </label>
+          <label>
+            Weekday (1-7)
+            <input type="number" min="1" max="7" name="weekday" required />
+          </label>
+          <label>
+            Lesson number (1-10)
+            <input type="number" min="1" max="10" name="lesson_number" required />
+          </label>
+          <label>
+            Week type (1-2, необязательно)
+            <select name="weektype">
+              <option value="">Обе недели</option>
+              <option value="1">1 неделя</option>
+              <option value="2">2 неделя</option>
+            </select>
+          </label>
+          <label>
+            Subgroup (1/2, необязательно)
+            <select name="subgroup">
+              <option value="">Все</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </label>
+        </div>
+
+        <button class="danger" type="submit">Удалить</button>
+        <p id="schedule-delete-status" class="status muted"></p>
       </form>
     </section>
   </main>
 
-  <script src="/assets/app.js?v=20260329b"></script>
+  <script src="/assets/app.js?v=20260413a"></script>
 </body>
 </html>

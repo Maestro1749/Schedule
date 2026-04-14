@@ -251,3 +251,29 @@ func (h *AdminHandler) GetGroups(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *AdminHandler) DeleteSchedule(w http.ResponseWriter, r *http.Request) {
+	var data models.DeleteScheduleDTO
+
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+		h.logger.Error("Failed to decode data", zap.Error(err))
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	if err := h.service.DeleteSchedule(data.GroupName, data.Weekday, data.Weektype, data.Subgroup, data.LessonNumber); err != nil {
+		switch {
+		case errors.Is(err, models.ErrInvalidDataInput):
+			http.Error(w, "Invalid data input", http.StatusBadRequest)
+			return
+		case errors.Is(err, models.ErrNotUpdated):
+			http.Error(w, "No matching lines found", http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+	}
+
+	w.WriteHeader(http.StatusOK)
+}

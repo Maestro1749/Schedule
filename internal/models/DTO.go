@@ -71,3 +71,11 @@ type CreateScheduleDTO struct {
 	WeekType     *int `json:"week_type,omitempty"`
 	Subgroup     *int `json:"subgroup,omitempty"`
 }
+
+type DeleteScheduleDTO struct {
+	GroupName    string `json:"group_name"`
+	Weekday      int    `json:"weekday"`
+	Weektype     *int   `json:"weektype,omitempty"`
+	Subgroup     *int   `json:"subgroup,omitempty"`
+	LessonNumber *int   `json:"lesson_number,omitempty"`
+}

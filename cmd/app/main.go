@@ -74,6 +74,7 @@ func main() {
 	router.Path("/groups").Methods("GET").HandlerFunc(adminHandler.GetGroups)
 	router.Path("/groups").Methods("POST").HandlerFunc(adminHandler.AddGroup)
 	router.Path("/schedule").Methods("POST").HandlerFunc(adminHandler.CreateSchedule)
+	router.Path("/schedule").Methods("DELETE").HandlerFunc(adminHandler.DeleteSchedule)
 
 	assetsDir := filepath.Join("web", "assets")
 	assetsHandler := http.StripPrefix("/assets/", http.FileServer(http.Dir(assetsDir)))

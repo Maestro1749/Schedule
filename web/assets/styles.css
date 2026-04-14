@@ -159,9 +159,27 @@ textarea:focus {
   padding: 11px 15px;
   cursor: pointer;
   transition: transform 160ms ease, filter 160ms ease;
+  margin-top: 12px;
 }
 
 .primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.danger {
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(130deg, var(--danger), color-mix(in srgb, var(--danger) 66%, #4f1414));
+  color: #fff7f7;
+  font-weight: 700;
+  padding: 11px 15px;
+  cursor: pointer;
+  transition: transform 160ms ease, filter 160ms ease;
+  margin-top: 12px;
+}
+
+.danger:hover {
   transform: translateY(-1px);
   filter: brightness(1.04);
 }

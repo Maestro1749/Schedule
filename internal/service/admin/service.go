@@ -196,3 +196,35 @@ func (s *AdminService) GetClassrooms() ([]models.Classroom, error) {
 func (s *AdminService) GetGroups() ([]models.Group, error) {
 	return s.repo.GetGroups()
 }
+
+func (s *AdminService) DeleteSchedule(
+	groupName string,
+	weekday int,
+	weektype *int,
+	subgroup *int,
+	lessonNumber *int,
+) error {
+	if weekday < 1 || weekday > 7 {
+		return models.ErrInvalidDataInput
+	}
+	if weektype != nil && (*weektype > 2 || *weektype < 1) {
+		return models.ErrInvalidDataInput
+	}
+	if subgroup != nil && (*subgroup > 2 || *subgroup < 1) {
+		return models.ErrInvalidDataInput
+	}
+	if lessonNumber != nil && (*lessonNumber > 10 || *lessonNumber < 1) {
+		return models.ErrInvalidDataInput
+	}
+
+	groupID, err := s.repo.GetGroupIdByName(groupName)
+	if err != nil {
+		return err
+	}
+
+	if err := s.repo.DeleteSchedule(groupID, weekday, weektype, subgroup, lessonNumber); err != nil {
+		return err
+	}
+
+	return nil
+}

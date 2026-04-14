@@ -52,6 +52,29 @@ function renderGroupSelects() {
   }
 }
 
+function renderDeleteGroupSelect() {
+  const select = document.getElementById("delete-group-select");
+  if (!select) {
+    return;
+  }
+
+  select.innerHTML = "";
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = state.groups.length ? "Выберите группу" : "Группы не найдены";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  select.appendChild(placeholder);
+
+  for (const group of state.groups) {
+    const option = document.createElement("option");
+    option.value = group.name;
+    option.textContent = group.name;
+    select.appendChild(option);
+  }
+}
+
 async function loadGroups() {
   const response = await fetch("/groups");
   if (!response.ok) {
@@ -62,6 +85,7 @@ async function loadGroups() {
   const payload = await response.json();
   state.groups = Array.isArray(payload) ? payload : [];
   renderGroupSelects();
+  renderDeleteGroupSelect();
 }
 
 function renderSubjectsSelect() {
@@ -180,7 +204,11 @@ async function loadReferenceData() {
 
 function renderSchedule(items, mode = "pair") {
   const container = document.getElementById("schedule-result");
+  const groupNameNode = document.getElementById("result-group-name");
   container.innerHTML = "";
+  if (groupNameNode) {
+    groupNameNode.textContent = "";
+  }
 
   if (!items.length) {
     container.innerHTML = '<p class="muted">Ничего не найдено по заданным параметрам.</p>';
@@ -221,10 +249,9 @@ function renderSchedule(items, mode = "pair") {
     const block = document.createElement("article");
     block.className = "schedule-item";
     block.innerHTML = `
-      <p><strong>${item.subject_name}</strong> (${item.weekday} день, ${item.lesson_number} пара, ${weekTypeLabel})</p>
+      <p><strong>${item.subject_name}</strong> (${item.lesson_number} пара, ${weekTypeLabel})</p>
       <p>Преподаватель: ${item.teacher_name}</p>
       <p>Кабинет: ${item.classroom_num}</p>
-      <p>Группа: ${item.group_name}</p>
       <p>Подгруппа: ${item.subgroup ?? "все"}</p>
     `;
     return block;
@@ -330,6 +357,17 @@ function setupSearchForm() {
   const form = document.getElementById("search-form");
   const status = document.getElementById("search-status");
   const weeklyButton = document.getElementById("weekly-schedule-btn");
+  const groupNameNode = document.getElementById("result-group-name");
+
+  const renderResultGroupName = (groupID, items) => {
+    if (!groupNameNode) {
+      return;
+    }
+
+    const selectedGroup = state.groups.find((group) => group.id === groupID);
+    const groupName = selectedGroup?.name || items[0]?.group_name || "";
+    groupNameNode.textContent = groupName ? `Группа: ${groupName}` : "";
+  };
 
   const runSearch = async (mode) => {
     const formData = new FormData(form);
@@ -372,12 +410,16 @@ function setupSearchForm() {
 
       state.scheduleItems = resultItems;
       renderSchedule(state.scheduleItems, mode);
+      renderResultGroupName(groupID, resultItems);
 
       const modeLabel = mode === "week" ? "на неделю" : "для выбранной пары";
       setStatus(status, `Найдено записей ${modeLabel}: ${resultItems.length}`, "ok");
     } catch (error) {
       setStatus(status, `Ошибка: ${error.message}`, "error");
       renderSchedule([], mode);
+      if (groupNameNode) {
+        groupNameNode.textContent = "";
+      }
     }
   };
 
@@ -404,6 +446,26 @@ function makePayload(kind, formData) {
     default:
       throw new Error("Неизвестный тип формы");
   }
+}
+
+function makeDeleteSchedulePayload(formData) {
+  const payload = {
+    group_name: String(formData.get("group_name")).trim(),
+    weekday: toInt(formData.get("weekday")),
+    lesson_number: toInt(formData.get("lesson_number"))
+  };
+
+  const weektypeRaw = formData.get("weektype");
+  if (weektypeRaw !== "") {
+    payload.weektype = toInt(weektypeRaw);
+  }
+
+  const subgroupRaw = formData.get("subgroup");
+  if (subgroupRaw !== "") {
+    payload.subgroup = toInt(subgroupRaw);
+  }
+
+  return payload;
 }
 
 function setupAdminSimpleForms() {
@@ -533,6 +595,41 @@ function setupScheduleCreateForm() {
   });
 }
 
+function setupScheduleDeleteForm() {
+  const form = document.getElementById("schedule-delete-form");
+  const status = document.getElementById("schedule-delete-status");
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+
+    const payload = makeDeleteSchedulePayload(formData);
+
+    if (!payload.group_name || !payload.weekday || !payload.lesson_number) {
+      setStatus(status, "Проверьте, что группа, день недели и номер пары заполнены корректно.", "error");
+      return;
+    }
+
+    try {
+      const response = await fetch("/schedule", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `Ошибка ${response.status}`);
+      }
+
+      setStatus(status, "Запись успешно удалена.", "ok");
+      form.reset();
+    } catch (error) {
+      setStatus(status, `Ошибка: ${error.message}`, "error");
+    }
+  });
+}
+
 function setupTabs() {
   const buttons = document.querySelectorAll(".tab-btn");
   const panels = {
@@ -558,6 +655,7 @@ setupTabs();
 setupSearchForm();
 setupAdminSimpleForms();
 setupScheduleCreateForm();
+setupScheduleDeleteForm();
 renderSchedule([]);
 
 loadReferenceData().catch((error) => {

@@ -271,3 +271,81 @@
 {"level":"info","timestamp":"2026-04-10 11:17:27","caller":"app/main.go:54","msg":"services initializated successfully"}
 {"level":"info","timestamp":"2026-04-10 11:17:27","caller":"app/main.go:59","msg":"handlers initializated successfully"}
 {"level":"info","timestamp":"2026-04-10 11:17:27","caller":"app/main.go:85","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 20:50:19","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 20:50:19","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 20:50:19","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 20:50:19","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 20:50:19","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 20:50:19","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 20:58:27","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 20:58:27","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 20:58:27","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 20:58:27","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 20:58:27","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 20:58:27","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 21:00:08","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:00:08","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 21:00:08","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:00:08","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:00:08","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:00:08","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 21:05:43","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:05:43","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 21:05:43","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:05:43","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:05:43","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:05:43","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 21:07:30","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:07:30","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 21:07:30","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:07:30","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:07:30","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 21:07:30","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 23:38:50","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:38:50","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 23:38:50","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:38:50","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:38:50","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:38:50","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 23:40:49","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:40:49","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 23:40:49","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:40:49","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:40:49","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:40:49","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 23:41:30","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:41:30","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 23:41:30","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:41:30","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:41:30","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:41:30","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 23:52:47","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:52:47","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 23:52:47","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:52:47","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:52:47","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:52:47","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 23:54:08","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:54:08","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 23:54:08","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:54:08","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:54:08","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:54:08","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 23:55:34","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:55:34","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 23:55:34","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:55:34","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:55:34","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:55:34","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-13 23:57:48","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:57:48","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-13 23:57:48","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:57:48","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:57:48","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-13 23:57:48","caller":"app/main.go:86","msg":"Starting server on :8080"}
+{"level":"info","timestamp":"2026-04-14 12:06:47","caller":"app/main.go:30","msg":"Logger initializated successfully"}
+{"level":"info","timestamp":"2026-04-14 12:06:47","caller":"app/main.go:44","msg":"Database connection established successfully"}
+{"level":"info","timestamp":"2026-04-14 12:06:47","caller":"app/main.go:49","msg":"repositories initializated successfully"}
+{"level":"info","timestamp":"2026-04-14 12:06:47","caller":"app/main.go:54","msg":"services initializated successfully"}
+{"level":"info","timestamp":"2026-04-14 12:06:47","caller":"app/main.go:59","msg":"handlers initializated successfully"}
+{"level":"info","timestamp":"2026-04-14 12:06:47","caller":"app/main.go:86","msg":"Starting server on :8080"}

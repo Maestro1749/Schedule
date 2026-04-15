@@ -11,21 +11,21 @@ import (
 )
 
 type AdminRepository interface {
-	AddTeacher(teachers []models.Teacher) error
-	AddSubject(subjects []models.Subject) error
-	AddClassroom(classrooms []models.Classroom) error
-	AddGroup(groups []models.Group) error
-	TeacherExistsByFullname(fullname string) (bool, error)
-	SubjectExistsByName(name string) (bool, error)
-	ClassroomExistsByNumber(number string) (bool, error)
-	GroupExistsByName(name string) (bool, error)
-	GetTeachers() ([]models.Teacher, error)
-	GetSubjects() ([]models.Subject, error)
-	GetClassrooms() ([]models.Classroom, error)
-	GetGroups() ([]models.Group, error)
-	CreateSchedule(data []models.CreateScheduleDTO) error
-	DeleteSchedule(groupID int, weekday int, weektype *int, subgroup *int, lessonNumber *int) error
-	GetGroupIdByName(groupName string) (int, error)
+	AddTeacher(ctx context.Context, teachers []models.Teacher) error
+	AddSubject(ctx context.Context, subjects []models.Subject) error
+	AddClassroom(ctx context.Context, classrooms []models.Classroom) error
+	AddGroup(ctx context.Context, groups []models.Group) error
+	TeacherExistsByFullname(ctx context.Context, fullname string) (bool, error)
+	SubjectExistsByName(ctx context.Context, name string) (bool, error)
+	ClassroomExistsByNumber(ctx context.Context, number string) (bool, error)
+	GroupExistsByName(ctx context.Context, name string) (bool, error)
+	GetTeachers(ctx context.Context) ([]models.Teacher, error)
+	GetSubjects(ctx context.Context) ([]models.Subject, error)
+	GetClassrooms(ctx context.Context) ([]models.Classroom, error)
+	GetGroups(ctx context.Context) ([]models.Group, error)
+	CreateSchedule(ctx context.Context, data []models.CreateScheduleDTO) error
+	DeleteSchedule(ctx context.Context, groupID int, weekday int, weektype *int, subgroup *int, lessonNumber *int) error
+	GetGroupIdByName(ctx context.Context, groupName string) (int, error)
 }
 
 type adminRepo struct {
@@ -37,15 +37,18 @@ func NewAdminRepository(db *sql.DB, logger *zap.Logger) AdminRepository {
 	return &adminRepo{db: db, logger: logger}
 }
 
-func (r *adminRepo) CreateSchedule(data []models.CreateScheduleDTO) error {
-	tx, err := r.db.Begin()
+func (r *adminRepo) CreateSchedule(ctx context.Context, data []models.CreateScheduleDTO) error {
+	txCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	tx, err := r.db.BeginTx(txCtx, nil)
 	if err != nil {
 		r.logger.Error("Failed to begin transaction", zap.Error(err))
 		return models.ErrInternalServer
 	}
 	defer tx.Rollback()
 
-	stmt, err := tx.Prepare("INSERT INTO Schedule (group_id, subject_id, teacher_id, classroom_id, weekday, lesson_number, week_type, subgroup) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
+	stmt, err := tx.PrepareContext(txCtx, "INSERT INTO Schedule (group_id, subject_id, teacher_id, classroom_id, weekday, lesson_number, week_type, subgroup) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
 	if err != nil {
 		r.logger.Error("Failed to prepare statement", zap.Error(err))
 		return models.ErrInternalServer
@@ -57,7 +60,7 @@ func (r *adminRepo) CreateSchedule(data []models.CreateScheduleDTO) error {
 			weekType = *item.WeekType
 		}
 
-		if _, err := stmt.Exec(item.GroupID, item.SubjectID, item.TeacherID, item.ClassroomID, item.Weekday, item.LessonNumber, weekType, item.Subgroup); err != nil {
+		if _, err := stmt.ExecContext(txCtx, item.GroupID, item.SubjectID, item.TeacherID, item.ClassroomID, item.Weekday, item.LessonNumber, weekType, item.Subgroup); err != nil {
 			r.logger.Error("Failed to execute statement", zap.Error(err))
 			return models.ErrInternalServer
 		}
@@ -72,22 +75,25 @@ func (r *adminRepo) CreateSchedule(data []models.CreateScheduleDTO) error {
 	return nil
 }
 
-func (r *adminRepo) AddTeacher(teachers []models.Teacher) error {
-	tx, err := r.db.Begin()
+func (r *adminRepo) AddTeacher(ctx context.Context, teachers []models.Teacher) error {
+	txCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	tx, err := r.db.BeginTx(txCtx, nil)
 	if err != nil {
 		r.logger.Error("Failed to begin transaction", zap.Error(err))
 		return models.ErrInternalServer
 	}
 	defer tx.Rollback()
 
-	stmt, err := tx.Prepare("INSERT INTO Teachers (fullname) VALUES ($1)")
+	stmt, err := tx.PrepareContext(txCtx, "INSERT INTO Teachers (fullname) VALUES ($1)")
 	if err != nil {
 		r.logger.Error("Failed to prepare statement", zap.Error(err))
 		return models.ErrInternalServer
 	}
 
 	for _, t := range teachers {
-		if _, err := stmt.Exec(t.Fullname); err != nil {
+		if _, err := stmt.ExecContext(txCtx, t.Fullname); err != nil {
 			r.logger.Error("Failed to execute statement", zap.Error(err))
 			return models.ErrInternalServer
 		}
@@ -102,9 +108,12 @@ func (r *adminRepo) AddTeacher(teachers []models.Teacher) error {
 	return nil
 }
 
-func (r *adminRepo) TeacherExistsByFullname(fullname string) (bool, error) {
+func (r *adminRepo) TeacherExistsByFullname(ctx context.Context, fullname string) (bool, error) {
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	var exists bool
-	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM Teachers WHERE LOWER(fullname) = LOWER($1))", fullname).Scan(&exists)
+	err := r.db.QueryRowContext(queryCtx, "SELECT EXISTS(SELECT 1 FROM Teachers WHERE LOWER(fullname) = LOWER($1))", fullname).Scan(&exists)
 	if err != nil {
 		r.logger.Error("Failed to check teacher existence", zap.Error(err))
 		return false, models.ErrInternalServer
@@ -113,8 +122,11 @@ func (r *adminRepo) TeacherExistsByFullname(fullname string) (bool, error) {
 	return exists, nil
 }
 
-func (r *adminRepo) GetTeachers() ([]models.Teacher, error) {
-	rows, err := r.db.Query("SELECT id, fullname FROM Teachers ORDER BY fullname ASC")
+func (r *adminRepo) GetTeachers(ctx context.Context) ([]models.Teacher, error) {
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	rows, err := r.db.QueryContext(queryCtx, "SELECT id, fullname FROM Teachers ORDER BY fullname ASC")
 	if err != nil {
 		r.logger.Error("Failed to query teachers", zap.Error(err))
 		return nil, models.ErrInternalServer
@@ -139,22 +151,25 @@ func (r *adminRepo) GetTeachers() ([]models.Teacher, error) {
 	return teachers, nil
 }
 
-func (r *adminRepo) AddSubject(subjects []models.Subject) error {
-	tx, err := r.db.Begin()
+func (r *adminRepo) AddSubject(ctx context.Context, subjects []models.Subject) error {
+	txCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	tx, err := r.db.BeginTx(txCtx, nil)
 	if err != nil {
 		r.logger.Error("Failed to begin transaction", zap.Error(err))
 		return models.ErrInternalServer
 	}
 	defer tx.Rollback()
 
-	stmt, err := tx.Prepare("INSERT INTO Subjects (name) VALUES ($1)")
+	stmt, err := tx.PrepareContext(txCtx, "INSERT INTO Subjects (name) VALUES ($1)")
 	if err != nil {
 		r.logger.Error("Failed to prepare statement", zap.Error(err))
 		return models.ErrInternalServer
 	}
 
 	for _, s := range subjects {
-		if _, err := stmt.Exec(s.Name); err != nil {
+		if _, err := stmt.ExecContext(txCtx, s.Name); err != nil {
 			r.logger.Error("Failed to execute statement", zap.Error(err))
 			return models.ErrInternalServer
 		}
@@ -169,9 +184,12 @@ func (r *adminRepo) AddSubject(subjects []models.Subject) error {
 	return nil
 }
 
-func (r *adminRepo) SubjectExistsByName(name string) (bool, error) {
+func (r *adminRepo) SubjectExistsByName(ctx context.Context, name string) (bool, error) {
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	var exists bool
-	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM Subjects WHERE LOWER(name) = LOWER($1))", name).Scan(&exists)
+	err := r.db.QueryRowContext(queryCtx, "SELECT EXISTS(SELECT 1 FROM Subjects WHERE LOWER(name) = LOWER($1))", name).Scan(&exists)
 	if err != nil {
 		r.logger.Error("Failed to check subject existence", zap.Error(err))
 		return false, models.ErrInternalServer
@@ -180,8 +198,11 @@ func (r *adminRepo) SubjectExistsByName(name string) (bool, error) {
 	return exists, nil
 }
 
-func (r *adminRepo) GetSubjects() ([]models.Subject, error) {
-	rows, err := r.db.Query("SELECT id, name FROM Subjects ORDER BY name ASC")
+func (r *adminRepo) GetSubjects(ctx context.Context) ([]models.Subject, error) {
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	rows, err := r.db.QueryContext(queryCtx, "SELECT id, name FROM Subjects ORDER BY name ASC")
 	if err != nil {
 		r.logger.Error("Failed to query subjects", zap.Error(err))
 		return nil, models.ErrInternalServer
@@ -206,22 +227,25 @@ func (r *adminRepo) GetSubjects() ([]models.Subject, error) {
 	return subjects, nil
 }
 
-func (r *adminRepo) AddClassroom(classrooms []models.Classroom) error {
-	tx, err := r.db.Begin()
+func (r *adminRepo) AddClassroom(ctx context.Context, classrooms []models.Classroom) error {
+	txCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	tx, err := r.db.BeginTx(txCtx, nil)
 	if err != nil {
 		r.logger.Error("Failed to begin transaction", zap.Error(err))
 		return models.ErrInternalServer
 	}
 	defer tx.Rollback()
 
-	stmt, err := tx.Prepare("INSERT INTO Classrooms (num) VALUES ($1)")
+	stmt, err := tx.PrepareContext(txCtx, "INSERT INTO Classrooms (num) VALUES ($1)")
 	if err != nil {
 		r.logger.Error("Failed to prepare statement", zap.Error(err))
 		return models.ErrInternalServer
 	}
 
 	for _, c := range classrooms {
-		if _, err := stmt.Exec(c.Number); err != nil {
+		if _, err := stmt.ExecContext(txCtx, c.Number); err != nil {
 			r.logger.Error("Failed to execute statement", zap.Error(err))
 			return models.ErrInternalServer
 		}
@@ -236,9 +260,12 @@ func (r *adminRepo) AddClassroom(classrooms []models.Classroom) error {
 	return nil
 }
 
-func (r *adminRepo) ClassroomExistsByNumber(number string) (bool, error) {
+func (r *adminRepo) ClassroomExistsByNumber(ctx context.Context, number string) (bool, error) {
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	var exists bool
-	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM Classrooms WHERE LOWER(num) = LOWER($1))", number).Scan(&exists)
+	err := r.db.QueryRowContext(queryCtx, "SELECT EXISTS(SELECT 1 FROM Classrooms WHERE LOWER(num) = LOWER($1))", number).Scan(&exists)
 	if err != nil {
 		r.logger.Error("Failed to check classroom existence", zap.Error(err))
 		return false, models.ErrInternalServer
@@ -247,8 +274,11 @@ func (r *adminRepo) ClassroomExistsByNumber(number string) (bool, error) {
 	return exists, nil
 }
 
-func (r *adminRepo) GetClassrooms() ([]models.Classroom, error) {
-	rows, err := r.db.Query("SELECT id, num FROM Classrooms ORDER BY num ASC")
+func (r *adminRepo) GetClassrooms(ctx context.Context) ([]models.Classroom, error) {
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	rows, err := r.db.QueryContext(queryCtx, "SELECT id, num FROM Classrooms ORDER BY num ASC")
 	if err != nil {
 		r.logger.Error("Failed to query classrooms", zap.Error(err))
 		return nil, models.ErrInternalServer
@@ -273,22 +303,25 @@ func (r *adminRepo) GetClassrooms() ([]models.Classroom, error) {
 	return classrooms, nil
 }
 
-func (r *adminRepo) AddGroup(groups []models.Group) error {
-	tx, err := r.db.Begin()
+func (r *adminRepo) AddGroup(ctx context.Context, groups []models.Group) error {
+	txCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	tx, err := r.db.BeginTx(txCtx, nil)
 	if err != nil {
 		r.logger.Error("Failed to begin transaction", zap.Error(err))
 		return models.ErrInternalServer
 	}
 	defer tx.Rollback()
 
-	stmt, err := tx.Prepare("INSERT INTO Groups (name) VALUES ($1)")
+	stmt, err := tx.PrepareContext(txCtx, "INSERT INTO Groups (name) VALUES ($1)")
 	if err != nil {
 		r.logger.Error("Failed to prepare statement", zap.Error(err))
 		return models.ErrInternalServer
 	}
 
 	for _, g := range groups {
-		if _, err := stmt.Exec(g.Name); err != nil {
+		if _, err := stmt.ExecContext(txCtx, g.Name); err != nil {
 			r.logger.Error("Failed to execute statement", zap.Error(err))
 			return models.ErrInternalServer
 		}
@@ -303,9 +336,12 @@ func (r *adminRepo) AddGroup(groups []models.Group) error {
 	return nil
 }
 
-func (r *adminRepo) GroupExistsByName(name string) (bool, error) {
+func (r *adminRepo) GroupExistsByName(ctx context.Context, name string) (bool, error) {
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	var exists bool
-	err := r.db.QueryRow("SELECT EXISTS(SELECT 1 FROM Groups WHERE LOWER(name) = LOWER($1))", name).Scan(&exists)
+	err := r.db.QueryRowContext(queryCtx, "SELECT EXISTS(SELECT 1 FROM Groups WHERE LOWER(name) = LOWER($1))", name).Scan(&exists)
 	if err != nil {
 		r.logger.Error("Failed to check group existence", zap.Error(err))
 		return false, models.ErrInternalServer
@@ -314,8 +350,11 @@ func (r *adminRepo) GroupExistsByName(name string) (bool, error) {
 	return exists, nil
 }
 
-func (r *adminRepo) GetGroups() ([]models.Group, error) {
-	rows, err := r.db.Query("SELECT id, name FROM Groups ORDER BY name ASC")
+func (r *adminRepo) GetGroups(ctx context.Context) ([]models.Group, error) {
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	rows, err := r.db.QueryContext(queryCtx, "SELECT id, name FROM Groups ORDER BY name ASC")
 	if err != nil {
 		r.logger.Error("Failed to query groups", zap.Error(err))
 		return nil, models.ErrInternalServer
@@ -341,6 +380,7 @@ func (r *adminRepo) GetGroups() ([]models.Group, error) {
 }
 
 func (r *adminRepo) DeleteSchedule(
+	ctx context.Context,
 	groupID int,
 	weekday int,
 	weektype *int,
@@ -350,9 +390,6 @@ func (r *adminRepo) DeleteSchedule(
 	query := "DELETE FROM Schedule WHERE group_id = $1 AND weekday = $2"
 	args := []interface{}{groupID, weekday}
 	argIndex := 3
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
 
 	if weektype != nil {
 		query += fmt.Sprintf(" AND week_type = $%d", argIndex)
@@ -371,7 +408,10 @@ func (r *adminRepo) DeleteSchedule(
 		args = append(args, *lessonNumber)
 	}
 
-	res, err := r.db.ExecContext(ctx, query, args...)
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	res, err := r.db.ExecContext(queryCtx, query, args...)
 	if err != nil {
 		r.logger.Error("failed to execute query", zap.Error(err))
 		return models.ErrInternalServer
@@ -389,15 +429,15 @@ func (r *adminRepo) DeleteSchedule(
 	return nil
 }
 
-func (r *adminRepo) GetGroupIdByName(groupName string) (int, error) {
+func (r *adminRepo) GetGroupIdByName(ctx context.Context, groupName string) (int, error) {
 	query := "SELECT id FROM Groups WHERE name = $1"
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	queryCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	var id int
 
-	err := r.db.QueryRowContext(ctx, query, groupName).Scan(&id)
+	err := r.db.QueryRowContext(queryCtx, query, groupName).Scan(&id)
 	if err != nil {
 		r.logger.Error("error to execute query", zap.Error(err))
 		return 0, models.ErrInternalServer

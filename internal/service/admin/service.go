@@ -1,6 +1,7 @@
 package admin_service
 
 import (
+	"context"
 	"schedule/internal/models"
 	admin_repository "schedule/internal/repository/admin"
 	"strings"
@@ -17,7 +18,7 @@ func NewUserService(repo admin_repository.AdminRepository, logger *zap.Logger) *
 	return &AdminService{repo: repo, logger: logger}
 }
 
-func (s *AdminService) CreateSchedule(data []models.CreateScheduleDTO) error {
+func (s *AdminService) CreateSchedule(ctx context.Context, data []models.CreateScheduleDTO) error {
 	if len(data) == 0 {
 		return models.ErrInvalidDataInput
 	}
@@ -34,14 +35,14 @@ func (s *AdminService) CreateSchedule(data []models.CreateScheduleDTO) error {
 		}
 	}
 
-	if err := s.repo.CreateSchedule(data); err != nil {
+	if err := s.repo.CreateSchedule(ctx, data); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (s *AdminService) AddTeacher(teachers []models.Teacher) error {
+func (s *AdminService) AddTeacher(ctx context.Context, teachers []models.Teacher) error {
 	if len(teachers) == 0 {
 		return models.ErrInvalidDataInput
 	}
@@ -60,7 +61,7 @@ func (s *AdminService) AddTeacher(teachers []models.Teacher) error {
 		}
 		seen[normalized] = struct{}{}
 
-		exists, err := s.repo.TeacherExistsByFullname(teachers[i].Fullname)
+		exists, err := s.repo.TeacherExistsByFullname(ctx, teachers[i].Fullname)
 		if err != nil {
 			return err
 		}
@@ -69,14 +70,14 @@ func (s *AdminService) AddTeacher(teachers []models.Teacher) error {
 		}
 	}
 
-	if err := s.repo.AddTeacher(teachers); err != nil {
+	if err := s.repo.AddTeacher(ctx, teachers); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (s *AdminService) AddClassroom(classrooms []models.Classroom) error {
+func (s *AdminService) AddClassroom(ctx context.Context, classrooms []models.Classroom) error {
 	if len(classrooms) == 0 {
 		return models.ErrInvalidDataInput
 	}
@@ -95,7 +96,7 @@ func (s *AdminService) AddClassroom(classrooms []models.Classroom) error {
 		}
 		seen[normalized] = struct{}{}
 
-		exists, err := s.repo.ClassroomExistsByNumber(classrooms[i].Number)
+		exists, err := s.repo.ClassroomExistsByNumber(ctx, classrooms[i].Number)
 		if err != nil {
 			return err
 		}
@@ -104,14 +105,14 @@ func (s *AdminService) AddClassroom(classrooms []models.Classroom) error {
 		}
 	}
 
-	if err := s.repo.AddClassroom(classrooms); err != nil {
+	if err := s.repo.AddClassroom(ctx, classrooms); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (s *AdminService) AddSubject(subjects []models.Subject) error {
+func (s *AdminService) AddSubject(ctx context.Context, subjects []models.Subject) error {
 	if len(subjects) == 0 {
 		return models.ErrInvalidDataInput
 	}
@@ -130,7 +131,7 @@ func (s *AdminService) AddSubject(subjects []models.Subject) error {
 		}
 		seen[normalized] = struct{}{}
 
-		exists, err := s.repo.SubjectExistsByName(subjects[i].Name)
+		exists, err := s.repo.SubjectExistsByName(ctx, subjects[i].Name)
 		if err != nil {
 			return err
 		}
@@ -139,14 +140,14 @@ func (s *AdminService) AddSubject(subjects []models.Subject) error {
 		}
 	}
 
-	if err := s.repo.AddSubject(subjects); err != nil {
+	if err := s.repo.AddSubject(ctx, subjects); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (s *AdminService) AddGroup(groups []models.Group) error {
+func (s *AdminService) AddGroup(ctx context.Context, groups []models.Group) error {
 	if len(groups) == 0 {
 		return models.ErrInvalidDataInput
 	}
@@ -165,7 +166,7 @@ func (s *AdminService) AddGroup(groups []models.Group) error {
 		}
 		seen[normalized] = struct{}{}
 
-		exists, err := s.repo.GroupExistsByName(groups[i].Name)
+		exists, err := s.repo.GroupExistsByName(ctx, groups[i].Name)
 		if err != nil {
 			return err
 		}
@@ -174,30 +175,31 @@ func (s *AdminService) AddGroup(groups []models.Group) error {
 		}
 	}
 
-	if err := s.repo.AddGroup(groups); err != nil {
+	if err := s.repo.AddGroup(ctx, groups); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (s *AdminService) GetTeachers() ([]models.Teacher, error) {
-	return s.repo.GetTeachers()
+func (s *AdminService) GetTeachers(ctx context.Context) ([]models.Teacher, error) {
+	return s.repo.GetTeachers(ctx)
 }
 
-func (s *AdminService) GetSubjects() ([]models.Subject, error) {
-	return s.repo.GetSubjects()
+func (s *AdminService) GetSubjects(ctx context.Context) ([]models.Subject, error) {
+	return s.repo.GetSubjects(ctx)
 }
 
-func (s *AdminService) GetClassrooms() ([]models.Classroom, error) {
-	return s.repo.GetClassrooms()
+func (s *AdminService) GetClassrooms(ctx context.Context) ([]models.Classroom, error) {
+	return s.repo.GetClassrooms(ctx)
 }
 
-func (s *AdminService) GetGroups() ([]models.Group, error) {
-	return s.repo.GetGroups()
+func (s *AdminService) GetGroups(ctx context.Context) ([]models.Group, error) {
+	return s.repo.GetGroups(ctx)
 }
 
 func (s *AdminService) DeleteSchedule(
+	ctx context.Context,
 	groupName string,
 	weekday int,
 	weektype *int,
@@ -217,12 +219,12 @@ func (s *AdminService) DeleteSchedule(
 		return models.ErrInvalidDataInput
 	}
 
-	groupID, err := s.repo.GetGroupIdByName(groupName)
+	groupID, err := s.repo.GetGroupIdByName(ctx, groupName)
 	if err != nil {
 		return err
 	}
 
-	if err := s.repo.DeleteSchedule(groupID, weekday, weektype, subgroup, lessonNumber); err != nil {
+	if err := s.repo.DeleteSchedule(ctx, groupID, weekday, weektype, subgroup, lessonNumber); err != nil {
 		return err
 	}
 

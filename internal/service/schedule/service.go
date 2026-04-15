@@ -1,6 +1,7 @@
 package schedule_service
 
 import (
+	"context"
 	"schedule/internal/models"
 	schedule_repository "schedule/internal/repository/schedule"
 
@@ -16,7 +17,7 @@ func NewScheduleService(repo schedule_repository.ScheduleRepository, logger *zap
 	return &ScheduleService{repo: repo, logger: logger}
 }
 
-func (s *ScheduleService) GetSchedule(req models.GetScheduleRequest) ([]models.ScheduleItemResponse, error) {
+func (s *ScheduleService) GetSchedule(ctx context.Context, req models.GetScheduleRequest) ([]models.ScheduleItemResponse, error) {
 	if req.WeekType != 1 && req.WeekType != 2 {
 		return nil, models.ErrInvalidWeekType
 	}
@@ -25,13 +26,13 @@ func (s *ScheduleService) GetSchedule(req models.GetScheduleRequest) ([]models.S
 		return nil, models.ErrInvalidWeekday
 	}
 
-	return s.repo.GetSchedule(req.GroupID, req.WeekType, req.Weekday, req.Subgroup)
+	return s.repo.GetSchedule(ctx, req.GroupID, req.WeekType, req.Weekday, req.Subgroup)
 }
 
-func (s *ScheduleService) GetWeekSchedule(req models.GetWeekScheduleRequest) ([]models.ScheduleItemResponse, error) {
+func (s *ScheduleService) GetWeekSchedule(ctx context.Context, req models.GetWeekScheduleRequest) ([]models.ScheduleItemResponse, error) {
 	if req.WeekType != nil && *req.WeekType != 1 && *req.WeekType != 2 {
 		return nil, models.ErrInvalidWeekType
 	}
 
-	return s.repo.GetWeekSchedule(req.GroupID, req.WeekType, req.Subgroup)
+	return s.repo.GetWeekSchedule(ctx, req.GroupID, req.WeekType, req.Subgroup)
 }

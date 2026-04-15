@@ -20,6 +20,8 @@ func NewUserHandler(service *admin_service.AdminService, logger *zap.Logger) *Ad
 }
 
 func (h *AdminHandler) CreateSchedule(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	var req []models.CreateScheduleDTO
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -28,7 +30,7 @@ func (h *AdminHandler) CreateSchedule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.service.CreateSchedule(req); err != nil {
+	if err := h.service.CreateSchedule(ctx, req); err != nil {
 		http.Error(w, "Failed to create schedule", http.StatusInternalServerError)
 		return
 	}
@@ -37,7 +39,10 @@ func (h *AdminHandler) CreateSchedule(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) AddTeacher(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	var data models.CreateTeachersRequest
+
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		h.logger.Error("Failed to decode request body", zap.Error(err))
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -49,7 +54,7 @@ func (h *AdminHandler) AddTeacher(w http.ResponseWriter, r *http.Request) {
 		teachers = append(teachers, models.Teacher{Fullname: t.Fullname})
 	}
 
-	if err := h.service.AddTeacher(teachers); err != nil {
+	if err := h.service.AddTeacher(ctx, teachers); err != nil {
 		switch {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid input data", http.StatusBadRequest)
@@ -67,7 +72,10 @@ func (h *AdminHandler) AddTeacher(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) AddSubject(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	var data models.CreateSubjectRequest
+
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		h.logger.Error("Failed to decode request body", zap.Error(err))
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -79,7 +87,7 @@ func (h *AdminHandler) AddSubject(w http.ResponseWriter, r *http.Request) {
 		subjects = append(subjects, models.Subject{Name: s.Name})
 	}
 
-	if err := h.service.AddSubject(subjects); err != nil {
+	if err := h.service.AddSubject(ctx, subjects); err != nil {
 		switch {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid input data", http.StatusBadRequest)
@@ -97,7 +105,10 @@ func (h *AdminHandler) AddSubject(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) AddClassroom(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	var data models.CreateClassroomRequest
+
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		h.logger.Error("Failed to decode request body", zap.Error(err))
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -109,7 +120,7 @@ func (h *AdminHandler) AddClassroom(w http.ResponseWriter, r *http.Request) {
 		classrooms = append(classrooms, models.Classroom{Number: s.Number})
 	}
 
-	if err := h.service.AddClassroom(classrooms); err != nil {
+	if err := h.service.AddClassroom(ctx, classrooms); err != nil {
 		switch {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid input data", http.StatusBadRequest)
@@ -127,7 +138,10 @@ func (h *AdminHandler) AddClassroom(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) AddGroup(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	var data models.CreateGroupRequest
+
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		h.logger.Error("Failed to decode request body", zap.Error(err))
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -139,7 +153,7 @@ func (h *AdminHandler) AddGroup(w http.ResponseWriter, r *http.Request) {
 		groups = append(groups, models.Group{Name: s.Name})
 	}
 
-	if err := h.service.AddGroup(groups); err != nil {
+	if err := h.service.AddGroup(ctx, groups); err != nil {
 		switch {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid input data", http.StatusBadRequest)
@@ -157,7 +171,9 @@ func (h *AdminHandler) AddGroup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) GetTeachers(w http.ResponseWriter, r *http.Request) {
-	teachers, err := h.service.GetTeachers()
+	ctx := r.Context()
+
+	teachers, err := h.service.GetTeachers(ctx)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
@@ -181,7 +197,9 @@ func (h *AdminHandler) GetTeachers(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) GetSubjects(w http.ResponseWriter, r *http.Request) {
-	subjects, err := h.service.GetSubjects()
+	ctx := r.Context()
+
+	subjects, err := h.service.GetSubjects(ctx)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
@@ -205,7 +223,9 @@ func (h *AdminHandler) GetSubjects(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) GetClassrooms(w http.ResponseWriter, r *http.Request) {
-	classrooms, err := h.service.GetClassrooms()
+	ctx := r.Context()
+
+	classrooms, err := h.service.GetClassrooms(ctx)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
@@ -229,7 +249,9 @@ func (h *AdminHandler) GetClassrooms(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) GetGroups(w http.ResponseWriter, r *http.Request) {
-	groups, err := h.service.GetGroups()
+	ctx := r.Context()
+
+	groups, err := h.service.GetGroups(ctx)
 	if err != nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
@@ -253,6 +275,8 @@ func (h *AdminHandler) GetGroups(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) DeleteSchedule(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	var data models.DeleteScheduleDTO
 
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
@@ -261,7 +285,7 @@ func (h *AdminHandler) DeleteSchedule(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.service.DeleteSchedule(data.GroupName, data.Weekday, data.Weektype, data.Subgroup, data.LessonNumber); err != nil {
+	if err := h.service.DeleteSchedule(ctx, data.GroupName, data.Weekday, data.Weektype, data.Subgroup, data.LessonNumber); err != nil {
 		switch {
 		case errors.Is(err, models.ErrInvalidDataInput):
 			http.Error(w, "Invalid data input", http.StatusBadRequest)

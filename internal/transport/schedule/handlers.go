@@ -20,6 +20,8 @@ func NewScheduleHandler(service *schedule_service.ScheduleService, logger *zap.L
 }
 
 func (h *ScheduleHandler) GetSchedule(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	query := r.URL.Query()
 
 	groupID, err := strconv.Atoi(query.Get("group_id"))
@@ -57,7 +59,7 @@ func (h *ScheduleHandler) GetSchedule(w http.ResponseWriter, r *http.Request) {
 		Subgroup: subgroup,
 	}
 
-	schedule, err := h.service.GetSchedule(req)
+	schedule, err := h.service.GetSchedule(ctx, req)
 	if err != nil {
 		http.Error(w, "failed to get schedule", http.StatusInternalServerError)
 		return
@@ -73,6 +75,8 @@ func (h *ScheduleHandler) GetSchedule(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *ScheduleHandler) GetWeekSchedule(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
 	query := r.URL.Query()
 
 	groupID, err := strconv.Atoi(query.Get("group_id"))
@@ -107,7 +111,7 @@ func (h *ScheduleHandler) GetWeekSchedule(w http.ResponseWriter, r *http.Request
 		Subgroup: subgroup,
 	}
 
-	schedule, err := h.service.GetWeekSchedule(req)
+	schedule, err := h.service.GetWeekSchedule(ctx, req)
 	if err != nil {
 		http.Error(w, "failed to get weekly schedule", http.StatusInternalServerError)
 		return

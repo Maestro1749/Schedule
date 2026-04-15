@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"schedule/internal/logger"
 	admin_repository "schedule/internal/repository/admin"
@@ -13,6 +15,8 @@ import (
 	schedule_service "schedule/internal/service/schedule"
 	admin_handler "schedule/internal/transport/admin"
 	schedule_handler "schedule/internal/transport/schedule"
+	"syscall"
+	"time"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -76,6 +80,7 @@ func main() {
 	router.Path("/schedule").Methods("POST").HandlerFunc(adminHandler.CreateSchedule)
 	router.Path("/schedule").Methods("DELETE").HandlerFunc(adminHandler.DeleteSchedule)
 
+	// Web
 	assetsDir := filepath.Join("web", "assets")
 	assetsHandler := http.StripPrefix("/assets/", http.FileServer(http.Dir(assetsDir)))
 	router.PathPrefix("/assets/").Methods("GET").Handler(assetsHandler)
@@ -83,9 +88,33 @@ func main() {
 		http.ServeFile(w, r, filepath.Join("web", "index.html"))
 	})
 
-	logger.Info("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", router); err != nil {
-		logger.Error("Failed to start server", zap.Error(err))
+	// Server
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: router,
+	}
+
+	go func() {
+		logger.Info("Starting server on :8080")
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			logger.Error("Failed to start server", zap.Error(err))
+			panic(err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+	<-quit
+	logger.Info("Stopping the server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
+		logger.Error("Forced server stop")
 		panic(err)
 	}
+
+	logger.Info("Server gracefully stopped.")
 }

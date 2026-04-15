@@ -11,12 +11,15 @@ import (
 
 type ScheduleRepository interface {
 	GetSchedule(
+		ctx context.Context,
 		GroupID int,
 		WeekType int,
 		Weekday int,
 		Subgroup *int,
 	) ([]models.ScheduleItemResponse, error)
+
 	GetWeekSchedule(
+		ctx context.Context,
 		GroupID int,
 		WeekType *int,
 		Subgroup *int,
@@ -33,6 +36,7 @@ func NewScheduleRepo(db *sql.DB, logger *zap.Logger) ScheduleRepository {
 }
 
 func (r *scheduleRepo) GetSchedule(
+	ctx context.Context,
 	GroupID int,
 	WeekType int,
 	Weekday int,
@@ -62,10 +66,10 @@ func (r *scheduleRepo) GetSchedule(
 		ORDER BY s.lesson_number;
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	queryCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	rows, err := r.db.QueryContext(ctx, query, GroupID, Weekday, WeekType, Subgroup)
+	rows, err := r.db.QueryContext(queryCtx, query, GroupID, Weekday, WeekType, Subgroup)
 	if err != nil {
 		r.logger.Error("failed to execute query", zap.Error(err))
 		return nil, err
@@ -100,6 +104,7 @@ func (r *scheduleRepo) GetSchedule(
 }
 
 func (r *scheduleRepo) GetWeekSchedule(
+	ctx context.Context,
 	GroupID int,
 	WeekType *int,
 	Subgroup *int,
@@ -130,10 +135,10 @@ func (r *scheduleRepo) GetWeekSchedule(
 		ORDER BY s.weekday, s.lesson_number, s.week_type;
 	`
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	queryCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	rows, err := r.db.QueryContext(ctx, query, GroupID, WeekType, Subgroup)
+	rows, err := r.db.QueryContext(queryCtx, query, GroupID, WeekType, Subgroup)
 	if err != nil {
 		r.logger.Error("failed to execute weekly schedule query", zap.Error(err))
 		return nil, err

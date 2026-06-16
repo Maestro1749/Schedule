@@ -9,4 +9,5 @@ var (
 	ErrInvalidDataInput = errors.New("Invalid data input")
 	ErrAlreadyExists    = errors.New("entity already exists")
 	ErrNotUpdated       = errors.New("not matching values found")
+	ErrClassroomBusy    = errors.New("classroom is already busy")
 )

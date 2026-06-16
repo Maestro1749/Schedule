@@ -23,7 +23,7 @@ type AdminRepository interface {
 	GetSubjects(ctx context.Context) ([]models.Subject, error)
 	GetClassrooms(ctx context.Context) ([]models.Classroom, error)
 	GetGroups(ctx context.Context) ([]models.Group, error)
-	CreateSchedule(ctx context.Context, data []models.CreateScheduleDTO) error
+	CreateSchedule(ctx context.Context, data models.CreateScheduleDTO) error
 	DeleteSchedule(ctx context.Context, groupID int, weekday int, weektype *int, subgroup *int, lessonNumber *int) error
 	GetGroupIdByName(ctx context.Context, groupName string) (int, error)
 }
@@ -37,7 +37,7 @@ func NewAdminRepository(db *sql.DB, logger *zap.Logger) AdminRepository {
 	return &adminRepo{db: db, logger: logger}
 }
 
-func (r *adminRepo) CreateSchedule(ctx context.Context, data []models.CreateScheduleDTO) error {
+func (r *adminRepo) CreateSchedule(ctx context.Context, data models.CreateScheduleDTO) error {
 	txCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 
@@ -48,22 +48,16 @@ func (r *adminRepo) CreateSchedule(ctx context.Context, data []models.CreateSche
 	}
 	defer tx.Rollback()
 
-	stmt, err := tx.PrepareContext(txCtx, "INSERT INTO Schedule (group_id, subject_id, teacher_id, classroom_id, weekday, lesson_number, week_type, subgroup) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
-	if err != nil {
-		r.logger.Error("Failed to prepare statement", zap.Error(err))
-		return models.ErrInternalServer
+	var weekType interface{}
+	if data.WeekType != nil {
+		weekType = *data.WeekType
 	}
 
-	for _, item := range data {
-		var weekType interface{}
-		if item.WeekType != nil {
-			weekType = *item.WeekType
-		}
+	query := "INSERT INTO Schedule (group_id, subject_id, teacher_id, classroom_id, weekday, lesson_number, week_type, subgroup) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)"
 
-		if _, err := stmt.ExecContext(txCtx, item.GroupID, item.SubjectID, item.TeacherID, item.ClassroomID, item.Weekday, item.LessonNumber, weekType, item.Subgroup); err != nil {
-			r.logger.Error("Failed to execute statement", zap.Error(err))
-			return models.ErrInternalServer
-		}
+	if _, err := tx.ExecContext(txCtx, query, data.GroupID, data.SubjectID, data.TeacherID, data.ClassroomID, data.Weekday, data.LessonNumber, weekType, data.Subgroup); err != nil {
+		r.logger.Error("Failed to execute statement", zap.Error(err))
+		return models.ErrInternalServer
 	}
 
 	if err := tx.Commit(); err != nil {
@@ -71,7 +65,7 @@ func (r *adminRepo) CreateSchedule(ctx context.Context, data []models.CreateSche
 		return models.ErrInternalServer
 	}
 
-	r.logger.Info("Successfully created schedule", zap.Int("count", len(data)))
+	r.logger.Info("Successfully created schedule")
 	return nil
 }
 
@@ -426,6 +420,7 @@ func (r *adminRepo) DeleteSchedule(
 		return models.ErrNotUpdated
 	}
 
+	r.logger.Info("note was deleted", zap.Int("group id", groupID), zap.Int("weekday", weekday))
 	return nil
 }
 

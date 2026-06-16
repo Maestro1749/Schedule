@@ -33,7 +33,9 @@ func main() {
 	defer logger.Sync()
 	logger.Info("Logger initializated successfully")
 
-	connectString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", "postgres", "postgres", "localhost", "5432", "ScheduleDB")
+	connectString := os.Getenv("POSTGRES_URL")
+
+	appPort := os.Getenv("APP_PORT")
 
 	db, err := sql.Open("postgres", connectString)
 	if err != nil {
@@ -90,12 +92,12 @@ func main() {
 
 	// Server
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + appPort,
 		Handler: router,
 	}
 
 	go func() {
-		logger.Info("Starting server on :8080")
+		logger.Info("Starting server", zap.String("port", appPort))
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			logger.Error("Failed to start server", zap.Error(err))
 			panic(err)

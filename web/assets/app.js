@@ -579,7 +579,7 @@ function setupScheduleCreateForm() {
       const response = await fetch("/schedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify([payloadItem])
+        body: JSON.stringify(payloadItem)
       });
 
       if (!response.ok) {

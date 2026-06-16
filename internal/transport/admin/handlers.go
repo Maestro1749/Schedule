@@ -22,7 +22,7 @@ func NewUserHandler(service *admin_service.AdminService, logger *zap.Logger) *Ad
 func (h *AdminHandler) CreateSchedule(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	var req []models.CreateScheduleDTO
+	var req models.CreateScheduleDTO
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.logger.Error("Failed to decode request body", zap.Error(err))

@@ -18,21 +18,15 @@ func NewUserService(repo admin_repository.AdminRepository, logger *zap.Logger) *
 	return &AdminService{repo: repo, logger: logger}
 }
 
-func (s *AdminService) CreateSchedule(ctx context.Context, data []models.CreateScheduleDTO) error {
-	if len(data) == 0 {
+func (s *AdminService) CreateSchedule(ctx context.Context, data models.CreateScheduleDTO) error {
+	if data.GroupID == 0 || data.SubjectID == 0 || data.TeacherID == 0 || data.ClassroomID == 0 {
 		return models.ErrInvalidDataInput
 	}
-
-	for _, item := range data {
-		if item.GroupID == 0 || item.SubjectID == 0 || item.TeacherID == 0 || item.ClassroomID == 0 {
-			return models.ErrInvalidDataInput
-		}
-		if item.Weekday < 1 || item.Weekday > 7 {
-			return models.ErrInvalidWeekday
-		}
-		if item.WeekType != nil && *item.WeekType != 1 && *item.WeekType != 2 {
-			return models.ErrInvalidWeekType
-		}
+	if data.Weekday < 1 || data.Weekday > 7 {
+		return models.ErrInvalidWeekday
+	}
+	if data.WeekType != nil && *data.WeekType != 1 && *data.WeekType != 2 {
+		return models.ErrInvalidWeekType
 	}
 
 	if err := s.repo.CreateSchedule(ctx, data); err != nil {

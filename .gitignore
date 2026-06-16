@@ -1,2 +1,6 @@
 logs
 Makefile
+.env
+.idea/
+.code
+*.log
